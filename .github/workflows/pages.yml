@@ -1,0 +1,40 @@
+name: Publish glitchcut
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/configure-pages@v5
+      - name: Generate catalog and prepare static site
+        shell: bash
+        run: |
+          SITE_DIR="."
+          if [ -f web/build-catalog.mjs ]; then SITE_DIR="web"; fi
+          node "$SITE_DIR/build-catalog.mjs"
+          mkdir -p _site
+          cp "$SITE_DIR/index.html" "$SITE_DIR/style.css" "$SITE_DIR/script.js" "$SITE_DIR/pfp.png" "$SITE_DIR/projects.json" _site/
+          cp -R "$SITE_DIR/projects" _site/projects
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "glitchcut",
+  "scripts": {
+    "start": "node build-catalog.mjs && node server.mjs",
+    "build": "node build-catalog.mjs"
+  }
+}
