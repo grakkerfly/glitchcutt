@@ -36,3 +36,4 @@
 .cube-wrap{scale:1.32}@media(max-width:600px){.cube-wrap{scale:.9504}}
 .cube-wrap{scale:1.254}@media(max-width:600px){.cube-wrap{scale:.90288}}
 @media(max-width:600px){.cube-wrap{scale:.767448}}
+.brand{gap:8px}.brand-pfp{width:29px;height:29px}.brand .brand-name{font-size:21px}@media(max-width:600px){.brand-pfp{width:25px;height:25px}.brand .brand-name{font-size:19px}}
