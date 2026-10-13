@@ -25,8 +25,9 @@ const projects=await Promise.all(entries.filter(e=>e.isDirectory()).sort((a,b)=>
   }
   media.push(item);
  }
- return {slug:entry.name,title:info.title||entry.name.replaceAll('-',' '),description:info.description||'',category:info.category||'',year:info.year||'2026',media};
+ return {slug:entry.name.trim().replace(/\s+/g,'-'),folder:entry.name,title:info.title||entry.name.replaceAll('-',' '),description:info.description||'',category:info.category||'',year:info.year||'2026',media};
 }));
+if(new Set(projects.map(p=>p.slug)).size!==projects.length)throw Error('Project names produce duplicate URLs. Rename one of the conflicting folders.');
 await fs.writeFile(path.join(root,'projects.json'),JSON.stringify(projects));
 const pages=path.join(root,'.pages');await fs.mkdir(pages,{recursive:true});
 const html=await fs.readFile(path.join(root,'index.html'),'utf8');
@@ -38,4 +39,5 @@ for(const project of projects){
 }
 console.log(`Catalog: ${projects.length} projects, ${projects.reduce((n,p)=>n+p.media.length,0)} media, ${(bytes/1024**3).toFixed(3)} GiB`);
 if(bytes>950*1024**2)console.warn('Media are close to the GitHub Pages 1 GB published-site limit. Consider external media storage before adding more.');
+
 
