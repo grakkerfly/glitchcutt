@@ -27,10 +27,13 @@ jobs:
         run: |
           SITE_DIR="."
           if [ -f web/build-catalog.mjs ]; then SITE_DIR="web"; fi
+          npm ci --prefix "$SITE_DIR"
           node "$SITE_DIR/build-catalog.mjs"
           mkdir -p _site
           cp "$SITE_DIR/index.html" "$SITE_DIR/style.css" "$SITE_DIR/script.js" "$SITE_DIR/pfp.png" "$SITE_DIR/projects.json" _site/
           cp -R "$SITE_DIR/projects" _site/projects
+          cp -R "$SITE_DIR/cube-previews" _site/cube-previews
+          cp -R "$SITE_DIR/.pages/." _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
@@ -38,3 +41,4 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+

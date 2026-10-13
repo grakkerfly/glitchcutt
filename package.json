@@ -4,5 +4,8 @@
   "scripts": {
     "start": "node build-catalog.mjs && node server.mjs",
     "build": "node build-catalog.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
   }
 }
